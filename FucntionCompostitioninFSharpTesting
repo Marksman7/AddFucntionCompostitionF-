@@ -1,0 +1,92 @@
+// Learn more about F# at http://fsharp.org
+
+open System
+
+
+type Monoid<'a> = {
+    empty: 'a
+    append: 'a -> 'a -> 'a
+
+}
+
+let stringMonoid ={
+
+    empty = ""
+    append = (+)
+
+}
+
+let andMonoid ={
+    empty = true
+    append = (&&)
+
+}
+
+let appendElseEmpty(m: Monoid<'a>) condition (x: 'a) (y: 'a)=
+    if condition
+    then m.append x y
+    else m.empty
+
+let startstring a b = a + b
+
+let addstring a b = a >> b
+
+let add x y= x  + y
+let square x = x * x
+let minus x = x - (x/2)
+
+let square_minus_add_double = square >> minus >> add
+
+[<EntryPoint>]
+let main argv =
+    
+    printf "Type a name = "
+    let person = System.Console.ReadLine();
+    let p = " tried to use "
+    let one =  startstring person p
+
+    printf "type a object = "
+    let thing = System.Console.ReadLine();
+    let t = " while "
+    let one = startstring one thing
+    let one = startstring one t
+    let one = startstring one person
+    let one = startstring one " "
+
+    printf "type a action = "
+    let action = System.Console.ReadLine();
+    let a = " around "
+    let one = startstring one action
+    let one = startstring one a
+
+    printf "type a time = "
+    let time = System.Console.ReadLine();
+    let ti = " later in the day "
+    let one = startstring one time
+    let one = startstring one ti
+
+    printfn (Printf.TextWriterFormat<_> one)
+
+    printf ""
+    printfn "Or we can do numbers "
+    printf "Type in a number = "
+    let xin = System.Console.ReadLine();
+    let x = Convert.ToInt32(xin)
+    printf "Type in another number = "
+    let yin = System.Console.ReadLine();
+    let y = Convert.ToInt32(yin)
+    
+    //let x = 100
+    //let y = 7
+
+    let q = square_minus_add_double x y
+    let qstring = sprintf "%i" q
+
+    printfn (Printf.TextWriterFormat<_> qstring)
+
+    //let addperson =  (appendElseEmpty stringMonoid true person  )
+    //let addthing =  (appendElseEmpty stringMonoid true addperson thing )
+    //printf "%A" (appendElseEmpty stringMonoid)
+
+    printfn "I think it worked!(((anumber * anumber) - (anumber/2)) + anothernumber )"
+    0 // return an integer exit code
